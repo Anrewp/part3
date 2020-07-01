@@ -1,31 +1,40 @@
 class Route
 
-  attr_reader :passing_stations_list
+  attr_reader :stations
 
   def initialize(current_station, end_station)
-    @current_station = current_station if station?(current_station)
-    @end_station = end_station if station?(end_station)
-    @passing_stations_list = [current_station, end_station]
+    check_attributes_type(current_station, end_station)
+    @stations = [current_station, end_station]
   end
 
-  def add_passing_station(station)
-    station?(station)
-    @passing_stations_list[-1,0] = station
+  def add_station(station)
+    @stations[-1,0] = station unless incorrect_station?(station)
   end
 
-  def remove_passing_station(station)
-    station?(station)
-    @passing_stations_list.delete(station)
+  def remove_station(station)
+    @stations.delete(station) unless incorrect_station?(station)
   end
 
   def show_route
-    @passing_stations_list.map.with_index { |station, index| [station.station_name, index + 1] }.to_h
+    @stations.map.with_index { |station, index| [station.station_name, index + 1] }.to_h
   end
 
-  private
+  private # -------------------------------------------------------------------
 
-  def station?(station)
-    return true if station.is_a?(Station)
+  def obj_is_a_station?(obj)
+    return true if obj.is_a?(Station)
     raise TypeError.new "Not a Station class"
+  end
+
+  def check_attributes_type(*objects)
+    objects.each { |obj| obj_is_a_station?(obj) }
+  end
+
+  def first_or_last_station?(station)
+    @stations.first == station || @stations.last == station
+  end
+
+  def incorrect_station?(station)
+    !obj_is_a_station?(station) || first_or_last_station?(station)
   end
 end

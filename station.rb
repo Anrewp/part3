@@ -8,16 +8,14 @@ class Station
   end
 
   def acept_train(train)
-    return unless train.is_a?(Train)
-    @train_list << train
+    @train_list << train if train.is_a?(Train)
   end
 
   def send_train(train)
-    return unless train.is_a?(Train)
     @train_list.delete(train)
   end
 
-  def train_list_by_type
-    @train_list.group_by { |train| train.type }.map { |type, trains| [type, trains.size] }
+  def train_list_by_type(train_type)
+    { train_type => @train_list.select { |train| train.type == train_type }.size }
   end
 end
