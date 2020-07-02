@@ -16,18 +16,18 @@ class Route
   end
 
   def show_route
-    @stations.map.with_index { |station, index| [station.station_name, index + 1] }.to_h
+    @stations.map.with_index(1) { |station, index| [station.station_name, index] }.to_h
   end
 
   private # -------------------------------------------------------------------
 
-  def obj_is_a_station?(obj)
-    return true if obj.is_a?(Station)
+  def is_a_station?(station)
+    return true if station.is_a?(Station)
     raise TypeError.new "Not a Station class"
   end
 
-  def check_attributes_type(*objects)
-    objects.each { |obj| obj_is_a_station?(obj) }
+  def check_attributes_type(*stations)
+    stations.each { |station| is_a_station?(station) }
   end
 
   def first_or_last_station?(station)
@@ -35,6 +35,6 @@ class Route
   end
 
   def incorrect_station?(station)
-    !obj_is_a_station?(station) || first_or_last_station?(station)
+    !is_a_station?(station) || first_or_last_station?(station)
   end
 end
