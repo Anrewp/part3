@@ -1,13 +1,11 @@
 class Train
-  TYPES = %w[freight passenger].freeze
 
-  attr_reader :speed, :carriage_amount, :type, :number
+  attr_reader :speed, :number, :carriages
 
-  def initialize(train_number, train_type, carriage_amount)
+  def initialize(train_number)
     @number = train_number.to_s
-    @type = train_type if correct_type?(train_type)
-    @carriage_amount = carriage_amount
     @speed = 0
+    @carriages = []
   end
 
   def initialize_route(route)
@@ -17,6 +15,8 @@ class Train
     @station_index = 0
   end
 
+  # - - - - - - - - - SPEED - - - - - - - - - - - - - 
+
   def increase_speed_by(num)
     @speed += num
   end
@@ -25,14 +25,18 @@ class Train
     @speed = 0
   end
 
-  def add_carriage
-    @carriage_amount += 1 if @speed == 0
+  # - - - - - - - -  CARRIAGE - - - - - - - - - - - - - 
+
+  def add_carriage(carriage)
+    @carriages << carriage if @speed == 0
   end
 
-  def remove_carriage
-    @carriage_amount -= 1 if @speed == 0 && @carriage_amount != 0
+  def remove_carriage(carriage)
+    @carriages.delete(carriage) if @speed == 0 && @carriages.size != 0
   end
 
+  # - - - - - - - -  STATIONS  - - - - - - - - - - - - - 
+  
   def current_station
     @route.stations[@station_index]
   end
@@ -46,6 +50,8 @@ class Train
     @route.stations[@station_index - 1]
   end
 
+  # - - - - - - - -  TRANSFER  - - - - - - - - - - - - - 
+
   def move_to_the_next_station
     move_between_stations('next_station')
   end
@@ -54,8 +60,9 @@ class Train
     move_between_stations('previous_station')
   end
 
-  private
+  protected # ------------------------------------------
 
+  # Может быть использован потомками 
   def move_between_stations(next_or_previous_station)
     station = self.send(next_or_previous_station)
     return unless station
@@ -63,10 +70,5 @@ class Train
     station.acept_train(self)
     op = next_or_previous_station == 'next_station' ? '+' : '-'
     @station_index = @station_index.send(op, 1)
-  end
-
-  def correct_type?(train_type)
-    return true if TYPES.include?(train_type)
-    raise TypeError.new 'Thre is no such train type' 
   end
 end
