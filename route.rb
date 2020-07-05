@@ -1,12 +1,10 @@
 class Route
-  @@instances = []
 
   attr_reader :stations
 
   def initialize(current_station, end_station)
     is_a_stations?(current_station, end_station)
     @stations = [current_station, end_station]
-    @@instances << self
   end
 
   def add_station(station)
@@ -19,14 +17,6 @@ class Route
 
   def show_route
     @stations.map.with_index(1) { |station, index| [station.station_name, index] }.to_h
-  end
-
-  def self.all
-    @@instances
-  end
-
-  def self.get_route(index)
-    @@instances[index]
   end
 
   private # -------------------------------------------------------------------
