@@ -1,1 +1,3 @@
-class Carriage ; end
+class Carriage
+  include Manufacturer
+end

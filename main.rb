@@ -1,3 +1,5 @@
+require './manufacturer.rb'
+require './instance_counter.rb'
 require './station.rb'
 require './route.rb'
 require './train.rb'

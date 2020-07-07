@@ -1,11 +1,16 @@
 class Train
+  include Manufacturer
+  include InstanceCounter
 
+  @@instances = []
   attr_reader :speed, :number, :carriages
 
   def initialize(train_number)
     @number = train_number.to_s
     @speed = 0
     @carriages = []
+    @@instances << self
+    self.register_instance
   end
 
   def initialize_route(route)
@@ -58,6 +63,12 @@ class Train
 
   def move_to_the_previous_station
     move_between_stations('previous_station')
+  end
+
+  # - - - - - - - -  GLOBAL  - - - - - - - - - - - - - 
+
+  def self.find(number)
+    @@instances.find { |train| train.number == number }
   end
 
   protected # ------------------------------------------
