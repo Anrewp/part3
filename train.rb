@@ -2,21 +2,21 @@ class Train
   include Manufacturer
   include InstanceCounter
 
-  @@instances = []
+  @@instances = {}
   attr_reader :speed, :number, :carriages
 
   def initialize(train_number)
     @number = train_number.to_s
     @speed = 0
     @carriages = []
-    @@instances << self
+    @@instances[@number] = self
     self.register_instance
   end
 
   def initialize_route(route)
     return unless route.is_a?(Route)
     @route = route
-    @route.stations.first.acept_train(self)
+    @route.stations.first.accept_train(self)
     @station_index = 0
   end
 
@@ -68,7 +68,7 @@ class Train
   # - - - - - - - -  GLOBAL  - - - - - - - - - - - - - 
 
   def self.find(number)
-    @@instances.find { |train| train.number == number }
+    @@instances[number]
   end
 
   protected # ------------------------------------------
@@ -78,7 +78,7 @@ class Train
     station = self.send(next_or_previous_station)
     return unless station
     self.current_station.send_train(self)
-    station.acept_train(self)
+    station.accept_train(self)
     op = next_or_previous_station == 'next_station' ? '+' : '-'
     @station_index = @station_index.send(op, 1)
   end

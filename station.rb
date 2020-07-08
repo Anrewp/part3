@@ -11,7 +11,7 @@ class Station
     self.register_instance
   end
 
-  def acept_train(train)
+  def accept_train(train)
     @train_list << train if train.is_a?(Train)
   end
 
