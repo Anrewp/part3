@@ -1,3 +1,4 @@
+require './exception_hendler.rb'
 require './manufacturer.rb'
 require './instance_counter.rb'
 require './station.rb'
@@ -9,5 +10,7 @@ require './carriage.rb'
 require './cargo_carriage.rb'
 require './passenger_carriage.rb'
 require './interface.rb'
+require './train_interface.rb'
 
-Interface.new.run
+# Interface.new.run
+TrainInterface.new.run

@@ -1,20 +1,29 @@
 class Route
   include InstanceCounter
+  include ExceptionHendler
 
   attr_reader :stations
 
   def initialize(current_station, end_station)
-    is_a_stations?(current_station, end_station)
+    valid?('Type', !(current_station.is_a?(Station) && end_station.is_a?(Station)) )
     @stations = [current_station, end_station]
     self.register_instance
+  rescue TypeError => e
+    rescue_info(e)
   end
 
   def add_station(station)
-    @stations[-1,0] = station if correct_station?(station)
+    valid?('Data', incorrect_station?(station))
+    @stations[-1,0] = station
+  rescue IncorrectData => e
+    rescue_info(e)
   end
 
   def remove_station(station)
-    @stations.delete(station) if correct_station?(station)
+    valid?('Data', incorrect_station?(station))
+    @stations.delete(station)
+  rescue IncorrectData => e
+    rescue_info(e)
   end
 
   def show_route
@@ -22,22 +31,12 @@ class Route
   end
 
   private # -------------------------------------------------------------------
-  # Методы используются только самим классом Route
-
-  def is_a_station?(station)
-    return true if station.is_a?(Station)
-    raise TypeError.new "Not a Station class"
-  end
-
-  def is_a_stations?(*stations)
-    stations.each { |station| is_a_station?(station) }
-  end
 
   def first_or_last_station?(station)
     @stations.first == station || @stations.last == station
   end
 
-  def correct_station?(station)
-    is_a_station?(station) && !first_or_last_station?(station)
+  def incorrect_station?(station)
+    !station.is_a?(Station) || first_or_last_station?(station)
   end
 end

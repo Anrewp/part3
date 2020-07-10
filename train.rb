@@ -1,29 +1,39 @@
 class Train
   include Manufacturer
   include InstanceCounter
+  include ExceptionHendler
 
+  NUMBER_FORMAT = /^[a-z|0-9]{3}-*[a-z|0-9]{2}$/i
   @@instances = {}
   attr_reader :speed, :number, :carriages
 
   def initialize(train_number)
-    @number = train_number.to_s
+    valid?('Regexp', train_number !~ NUMBER_FORMAT)
+    @number = train_number
     @speed = 0
     @carriages = []
     @@instances[@number] = self
     self.register_instance
+  rescue RegexpError => e
+    rescue_info(e)
   end
 
   def initialize_route(route)
-    return unless route.is_a?(Route)
+    valid?('Type', !route.is_a?(Route))
     @route = route
     @route.stations.first.accept_train(self)
     @station_index = 0
+  rescue TypeError => e
+    rescue_info(e)
   end
 
   # - - - - - - - - - SPEED - - - - - - - - - - - - - 
 
   def increase_speed_by(num)
+    valid?('Type', !num.is_a?(Numeric))
     @speed += num
+  rescue TypeError => e
+    rescue_info(e)
   end
 
   def stop
@@ -73,7 +83,6 @@ class Train
 
   protected # ------------------------------------------
 
-  # Может быть использован потомками 
   def move_between_stations(next_or_previous_station)
     station = self.send(next_or_previous_station)
     return unless station

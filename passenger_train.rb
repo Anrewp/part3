@@ -1,5 +1,10 @@
 class PassengerTrain < Train
+  include ExceptionHendler
+
   def add_carriage(carriage)
-    super if carriage.is_a?(PassengerCarriage)
+    valid?('Type', !carriage.is_a?(PassengerCarriage))
+    super
+  rescue TypeError => e
+    rescue_info(e)
   end
 end

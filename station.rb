@@ -1,18 +1,25 @@
 class Station
   include InstanceCounter
+  include ExceptionHendler
 
   @@instances = []
   attr_reader :train_list, :station_name
 
   def initialize(station_name)
+    valid?("Type", !station_name.is_a?(String))
     @station_name = station_name
     @train_list = []
     @@instances << self
     self.register_instance
+  rescue TypeError => e
+    rescue_info(e)
   end
 
   def accept_train(train)
-    @train_list << train if train.is_a?(Train)
+    valid?("Type", !train.is_a?(Train))
+    @train_list << train
+  rescue TypeError => e
+    rescue_info(e)
   end
 
   def send_train(train)
