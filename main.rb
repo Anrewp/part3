@@ -1,4 +1,4 @@
-require './exception_hendler.rb'
+require './exception_handler.rb'
 require './manufacturer.rb'
 require './instance_counter.rb'
 require './station.rb'

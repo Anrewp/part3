@@ -1,4 +1,4 @@
-require './exception_hendler.rb'
+require './exception_handler.rb'
 require './manufacturer.rb'
 require './instance_counter.rb'
 require './station.rb'
@@ -28,4 +28,3 @@ puts CargoTrain.instances == 1
 
 puts PassengerTrain.find('STA-22').number == 'STA-22'
 
-puts true unless r.nil?

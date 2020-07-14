@@ -1,4 +1,4 @@
-module ExceptionHendler
+module ExceptionHandler
   ERR_MSG_FORMAT = 'Does not match regular expression foramt!'
   ERR_MSG_TYPE = 'Class type is incorrect!'
   ERR_MSG_DATA = 'Data is incorrect!'
