@@ -2,7 +2,7 @@ class Train
   include Manufacturer
   include InstanceCounter
 
-  NUMBER_FORMAT = /^[a-z|0-9]{3}-*[a-z|0-9]{2}$/i
+  NUMBER_FORMAT = /^[a-z|0-9]{3}-?[a-z|0-9]{2}$/i
   @@instances = {}
   attr_reader :speed, :number, :carriages
 
@@ -13,16 +13,12 @@ class Train
     @carriages = []
     @@instances[@number] = self
     self.register_instance
-  rescue RegexpError => e
-    rescue_info(e)
   end
 
   def initialize_route(route)
     @route = route if valid_route?(route)
     @route.stations.first.accept_train(self)
     @station_index = 0
-  rescue TypeError => e
-    rescue_info(e)
   end
 
   # - - - - - - - - - SPEED - - - - - - - - - - - - - 
@@ -97,10 +93,5 @@ class Train
   def valid_route?(route)
     raise TypeError.new "Not a Route class!" unless route.is_a?(Route) 
     true
-  end
-
-  def rescue_info(error)
-    puts " Rescued: Error: #{error.message}"
-    error.backtrace.each { |trace| puts trace }
   end
 end

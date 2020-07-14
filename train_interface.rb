@@ -12,8 +12,15 @@ class TrainInterface
               when 2 then  PassengerTrain.new(number)
               else raise StandardError.new "No such option try again"
               end
-      success if train.valid_not_empty?
+      success
     end
+
+  rescue RegexpError => e
+    rescue_info(e)
+    retry
+  rescue TypeError => e
+    rescue_info(e)
+    retry
   rescue StandardError => e
     rescue_info(e)
     retry
