@@ -10,18 +10,29 @@ class Interface
     loop do
 
       puts "- - - - - - - - - - - - - - - - - - - - - - - -"
+      puts " --- CREATE ---"
       puts "Choose 1  to create station"
       puts "Choose 2  to create train"
       puts "Choose 3  to create route"
+      puts ""
+      puts " --- ADD/REMOVE ---"
       puts "Choose 4  to add station to route"
       puts "Choose 5  to remove station from route"
       puts "Choose 6  to assign train to route"
+      puts ""
       puts "Choose 7  to add carriage to train"
       puts "Choose 8  to remove carriage from train"
-      puts "Choose 9  to transfer train to the next stations"
-      puts "Choose 10 to transfer train to the previous stations"
-      puts "Choose 11 to Show all stations"
-      puts "Choose 12 to Show all trains on station"
+      puts "Choose 9  take up a seat in passenger train carriage"
+      puts "Choose 10 take up volume of  cargo train carriage"
+      puts ""
+      puts " --- TRANSFER ---"
+      puts "Choose 11 to transfer train to the next stations"
+      puts "Choose 12 to transfer train to the previous stations"
+      puts ""
+      puts " --- INFO ---"
+      puts "Choose 13 to Show all stations"
+      puts "Choose 14 to Show all trains on station"
+      puts "Choose 15 to Show train carriages"
       puts "- - - - - - - - - - - - - - - - - - - - - - - -"
       option = gets.chomp.to_i
 
@@ -34,10 +45,13 @@ class Interface
       when 6  then assign_train_to_route
       when 7  then add_carriage_to_train
       when 8  then remove_carriage_from_train
-      when 9  then move_train_to_the_next_station
-      when 10 then move_train_to_the_previous_station
-      when 11 then show_all_stations
-      when 12 then show_all_trains_on_station
+      when 9  then take_a_seat
+      when 10 then take_up_carriage_volume
+      when 11 then move_train_to_the_next_station
+      when 12 then move_train_to_the_previous_station
+      when 13 then show_all_stations
+      when 14 then show_all_trains_on_station
+      when 15 then show_train_carriages
       else break
       end
 
@@ -122,7 +136,13 @@ class Interface
 
   def add_carriage_to_train
     t = find_train
-    c =  t.class.to_s['Cargo'] ? CargoCarriage.new : PassengerCarriage.new
+    c = if t.class.to_s['Cargo']
+          puts "Enter carriage volume"
+          CargoCarriage.new(gets.chomp.to_i)
+        else
+          puts "Enter carriage available seats number"
+          PassengerCarriage.new(gets.chomp.to_i)
+        end
     t.add_carriage(c)
     press_enter_to_continue
   end
@@ -136,6 +156,17 @@ class Interface
     c = t.carriages[gets.chomp.to_i]
     t.remove_carriage(c)
     press_enter_to_continue
+  end
+
+  def take_a_seat
+    c = find_train_carriage('Passenger')
+    c.take_a_seat
+  end
+
+  def take_up_carriage_volume
+    c = find_train_carriage('Cargo')
+    puts "Enter volume"
+    c.take_up_valume(gets.chomp.to_i)
   end
 
   # __________________ TRANSFER __________________________
@@ -164,7 +195,20 @@ class Interface
   def show_all_trains_on_station
     available_stations
     station = get_station(gets.chomp.to_i)
-    station.train_list.each_with_index { |train, index| puts "#{train.number} - #{index}" }
+    station.each_train_to_block_with_index(1) { |train, index| puts "#{train.number} - #{index}" }
+    press_enter_to_continue
+  end
+
+  def show_train_carriages
+    t = find_train
+    t.each_carriage_to_block_with_index(1) do |carriage, index|
+      puts "#{t.number} - #{t.class.to_s}"
+      if carriage.class.to_s['Cargo']
+        puts " \\_ Carriage-number-#{index} #{carriage.class.to_s} volume_left:#{carriage.volume_left} occupaid_volume:#{carriage.occupaid_volume}"
+      else
+        puts " \\_ Carriage-number-#{index} #{carriage.class.to_s} free_seats:#{carriage.free_seats} occupied_seats:#{carriage.occupied_seats}"
+      end
+    end
     press_enter_to_continue
   end
 
@@ -223,11 +267,24 @@ class Interface
     [r, s]
   end
 
-  def find_train
+  def find_train(type = nil)
     available_info('train')
-    @trains.each_with_index { |train, index| puts "#{train.class} number: #{train.number} - #{index}" }
+    if type
+      @trains.each_with_index { |train, index| puts "#{train.class} number: #{train.number} - #{index}" if train.class.to_s[type] }
+    else
+      @trains.each_with_index { |train, index| puts "#{train.class} number: #{train.number} - #{index}" }
+    end
     choose_info('train')
     help_info
     @trains[gets.chomp.to_i]
+  end
+
+  def find_train_carriage(type)
+    t = find_train(type)
+    available_info('carriage')
+    t.carriages.each_with_index { |carriage, index| puts "#{carriage} - #{index}" if t.class.to_s[type] }
+    choose_info('carriage')
+    help_info
+    t.carriages[gets.chomp.to_i]
   end
 end

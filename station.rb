@@ -26,7 +26,15 @@ class Station
   end
 
   def self.all
-    @@instances.inspect
+    @@instances
+  end
+  
+  def each_train_to_block_with_index(index = 0, &block)
+    return unless block_given?
+    @train_list.each do |train|
+      block.call(train, index) 
+      index += 1
+    end
   end
 
   private # ------------------------------------------------------

@@ -40,7 +40,7 @@ class Route
   end
 
   def valid_station?(station)
-    raise TypeError.new "Not a station class" unless station.is_a?(Station) && !first_or_last_station?
+    raise TypeError.new "Not a station class" unless station.is_a?(Station) && !first_or_last_station?(station)
     true
   end
 end

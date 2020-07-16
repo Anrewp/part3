@@ -15,13 +15,7 @@ class TrainInterface
       success
     end
 
-  rescue RegexpError => e
-    rescue_info(e)
-    retry
-  rescue TypeError => e
-    rescue_info(e)
-    retry
-  rescue StandardError => e
+  rescue RegexpError, TypeError, StandardError => e
     rescue_info(e)
     retry
   end 

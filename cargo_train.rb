@@ -9,5 +9,6 @@ class CargoTrain < Train
 
   def valid_carriage?(carriage)
     raise TypeError.new "Not a CargoCarriage class!" unless carriage.is_a?(CargoCarriage)
+    true
   end
 end

@@ -12,5 +12,5 @@ require './passenger_carriage.rb'
 require './interface.rb'
 require './train_interface.rb'
 
-# Interface.new.run
-TrainInterface.new.run
+Interface.new.run
+# TrainInterface.new.run
