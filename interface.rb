@@ -204,9 +204,9 @@ class Interface
     t.each_carriage_to_block_with_index(1) do |carriage, index|
       puts "#{t.number} - #{t.class.to_s}"
       if carriage.class.to_s['Cargo']
-        puts " \\_ Carriage-number-#{index} #{carriage.class.to_s} volume_left:#{carriage.volume_left} occupaid_volume:#{carriage.occupaid_volume}"
+        puts " \\_ Carriage-number-#{index} #{carriage.class.to_s} volume_left:#{carriage.free_space} occupaid_volume:#{carriage.space_left}"
       else
-        puts " \\_ Carriage-number-#{index} #{carriage.class.to_s} free_seats:#{carriage.free_seats} occupied_seats:#{carriage.occupied_seats}"
+        puts " \\_ Carriage-number-#{index} #{carriage.class.to_s} free_seats:#{carriage.free_space} occupied_seats:#{carriage.space_left}"
       end
     end
     press_enter_to_continue

@@ -43,10 +43,7 @@ class Train
 
   def each_carriage_to_block_with_index(index = 0, &block)
     return unless block_given?
-    @carriages.each do |carriage|
-      block.call(carriage, index)
-      index += 1
-    end
+    @carriages.each.with_index(index) { |carriage, index|  block.call(carriage, index) }
   end
 
   # - - - - - - - -  STATIONS  - - - - - - - - - - - - - 

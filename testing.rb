@@ -50,14 +50,16 @@ puts "----------------------------------------"
 #-----------------------------------------------------------------------------
 
 PassengerTrain.find('STA-22').each_carriage_to_block_with_index { |carriage| puts carriage.inspect }
+CargoTrain.find('BUL-77').each_carriage_to_block_with_index { |carriage| puts carriage.inspect }
+puts "----------------------------------------"
 Station.all.each do |station|
   station.each_train_to_block_with_index do |train|
     puts "#{train.number} #{train.class.to_s}-carriages ammout: #{train.carriages.size}"
     train.each_carriage_to_block_with_index(1) do |carriage, index|
       if carriage.class.to_s['Cargo']
-        puts " \\_ Carriage-number-#{index} #{carriage.class.to_s} volume_left:#{carriage.volume_left} occupaid_volume:#{carriage.occupaid_volume}"
+        puts " \\_ Carriage-number-#{index} #{carriage.class.to_s} volume_left:#{carriage.free_space} occupaid_volume:#{carriage.space_left}"
       else
-        puts " \\_ Carriage-number-#{index} #{carriage.class.to_s} free_seats:#{carriage.free_seats} occupied_seats:#{carriage.occupied_seats}"
+        puts " \\_ Carriage-number-#{index} #{carriage.class.to_s} free_seats:#{carriage.free_space} occupied_seats:#{carriage.space_left}"
       end
     end
   end

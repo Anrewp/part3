@@ -31,10 +31,7 @@ class Station
   
   def each_train_to_block_with_index(index = 0, &block)
     return unless block_given?
-    @train_list.each do |train|
-      block.call(train, index) 
-      index += 1
-    end
+    @train_list.each.with_index(index) { |train, index| block.call(train, index) }
   end
 
   private # ------------------------------------------------------
