@@ -10,7 +10,7 @@ require './passenger_carriage.rb'
 require './passenger_train.rb'
 require './cargo_train.rb'
 
-def test(test_number, condition,  msg = '')
+def test(test_number, condition, msg = '')
   puts condition ? "#{test_number}  |TRUE |  #{msg}" : "#{test_number} [[FALSE]] #{msg}"
 end
 
@@ -27,7 +27,6 @@ CargoTrain.new('BUL-77')
 r = Route.new(s1, s2)
 r.add_station(s3)
 
-
 cargo_carriage = CargoCarriage.new(300)
 passenger_carriage = PassengerCarriage.new(48)
 passenger_carriage_2 = PassengerCarriage.new(24)
@@ -39,7 +38,6 @@ PassengerTrain.find('STA-22').add_carriage(passenger_carriage_2)
 CargoTrain.find('BUL-77').add_carriage(cargo_carriage)
 PassengerTrain.find('STA-22').initialize_route(r)
 CargoTrain.find('BUL-77').initialize_route(r)
-
 
 #-----------------------------------------------------------------------------
 test 1, Station.instances == 3, 'number of stations'
@@ -54,14 +52,13 @@ CargoTrain.find('BUL-77').each_carriage_to_block_with_index { |carriage| puts ca
 puts "----------------------------------------"
 Station.all.each do |station|
   station.each_train_to_block_with_index do |train|
-    puts "#{train.number} #{train.class.to_s}-carriages ammout: #{train.carriages.size}"
+    puts "#{train.number} #{train.class}-carriages ammout: #{train.carriages.size}"
     train.each_carriage_to_block_with_index(1) do |carriage, index|
       if carriage.class.to_s['Cargo']
-        puts " \\_ Carriage-number-#{index} #{carriage.class.to_s} volume_left:#{carriage.free_space} occupaid_volume:#{carriage.space_left}"
+        puts " \\_ Carriage-number-#{index} #{carriage.class} volume_left:#{carriage.free_space} occupaid_volume:#{carriage.space_left}"
       else
-        puts " \\_ Carriage-number-#{index} #{carriage.class.to_s} free_seats:#{carriage.free_space} occupied_seats:#{carriage.space_left}"
+        puts " \\_ Carriage-number-#{index} #{carriage.class} free_seats:#{carriage.free_space} occupied_seats:#{carriage.space_left}"
       end
     end
   end
 end
-

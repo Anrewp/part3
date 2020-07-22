@@ -72,17 +72,17 @@ class Interface
 # ______________________________________________________
 
   def create_station
-    puts "Add station name: "
+    puts 'Add station name: '
     @stations << Station.new(gets.chomp.to_s)
     press_enter_to_continue
   end
 
   def create_train
-    puts "Enter train number: "
+    puts 'Enter train number: '
     number = gets.chomp.to_s
-    puts "Train types: "
-    puts "enter 1 for Cargo Train"
-    puts "enter 2 for Passenger Train"
+    puts 'Train types: '
+    puts 'enter 1 for Cargo Train'
+    puts 'enter 2 for Passenger Train'
     result = gets.chomp.to_i
 
     case result
@@ -97,9 +97,11 @@ class Interface
     available_stations
     first_station = @stations[gets.chomp.to_i]
     return unless first_station
+
     available_stations
     second_station = @stations[gets.chomp.to_i]
     return unless second_station
+
     @routes << Route.new(first_station, second_station)
     press_enter_to_continue
   end
@@ -137,10 +139,10 @@ class Interface
   def add_carriage_to_train
     t = find_train
     c = if t.class.to_s['Cargo']
-          puts "Enter carriage volume"
+          puts 'Enter carriage volume'
           CargoCarriage.new(gets.chomp.to_i)
         else
-          puts "Enter carriage available seats number"
+          puts 'Enter carriage available seats number'
           PassengerCarriage.new(gets.chomp.to_i)
         end
     t.add_carriage(c)
@@ -165,7 +167,7 @@ class Interface
 
   def take_up_carriage_volume
     c = find_train_carriage('Cargo')
-    puts "Enter volume"
+    puts 'Enter volume'
     c.take_up_valume(gets.chomp.to_i)
   end
 
@@ -202,11 +204,11 @@ class Interface
   def show_train_carriages
     t = find_train
     t.each_carriage_to_block_with_index(1) do |carriage, index|
-      puts "#{t.number} - #{t.class.to_s}"
+      puts "#{t.number} - #{t.class}"
       if carriage.class.to_s['Cargo']
-        puts " \\_ Carriage-number-#{index} #{carriage.class.to_s} volume_left:#{carriage.free_space} occupaid_volume:#{carriage.space_left}"
+        puts " \\_ Carriage-number-#{index} #{carriage.class} volume_left:#{carriage.free_space} occupaid_volume:#{carriage.space_left}"
       else
-        puts " \\_ Carriage-number-#{index} #{carriage.class.to_s} free_seats:#{carriage.free_space} occupied_seats:#{carriage.space_left}"
+        puts " \\_ Carriage-number-#{index} #{carriage.class} free_seats:#{carriage.free_space} occupied_seats:#{carriage.space_left}"
       end
     end
     press_enter_to_continue
@@ -225,7 +227,7 @@ class Interface
 
 
   def help_info
-    puts "(Enter number from above list)"
+    puts '(Enter number from above list)'
   end
 
   def available_info(type)
@@ -241,7 +243,7 @@ class Interface
   end
 
   def press_enter_to_continue
-    puts "Press Enter to continue"
+    puts 'Press Enter to continue'
     gets
   end
 
@@ -254,7 +256,7 @@ class Interface
 
   def available_routes
     available_info('route')
-    @routes.each_with_index { |station, index| puts "Route - #{index}" }
+    @routes.each_with_index { |_station, index| puts "Route - #{index}" }
     choose_info('route')
     help_info
   end

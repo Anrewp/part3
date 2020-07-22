@@ -7,12 +7,12 @@ class Route
   def initialize(current_station, end_station)
     valid?(current_station, end_station)
     @stations = [current_station, end_station]
-    self.register_instance
+    register_instance
   end
 
   def add_station(station)
     valid_station?(station)
-    @stations[-1,0] = station
+    @stations[-1, 0] = station
   end
 
   def remove_station(station)
@@ -35,12 +35,12 @@ class Route
   end
 
   def valid?(current_station, end_station)
-    raise TypeError.new "Not a station class" unless current_station.is_a?(Station) && end_station.is_a?(Station)
+    raise TypeError, 'Not a station class' unless current_station.is_a?(Station) && end_station.is_a?(Station)
     true
   end
 
   def valid_station?(station)
-    raise TypeError.new "Not a station class" unless station.is_a?(Station) && !first_or_last_station?(station)
+    raise TypeError, 'Not a station class' unless station.is_a?(Station) && !first_or_last_station?(station)
     true
   end
 end

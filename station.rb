@@ -10,7 +10,7 @@ class Station
     @station_name = station_name
     @train_list = []
     @@instances << self
-    self.register_instance
+    register_instance
   end
 
   def accept_train(train)
@@ -29,20 +29,21 @@ class Station
     @@instances
   end
   
-  def each_train_to_block_with_index(index = 0, &block)
+  def each_train_to_block_with_index(train_index = 0, &block)
     return unless block_given?
-    @train_list.each.with_index(index) { |train, index| block.call(train, index) }
+
+    @train_list.each.with_index(train_index) { |train, index| block.call(train, index) }
   end
 
   private # ------------------------------------------------------
 
   def valid?(station_name)
-    raise TypeError.new "Station name is not a string" unless station_name.is_a?(String)
+    raise TypeError, 'Station name is not a string' unless station_name.is_a?(String)
     true
   end
 
   def valid_train?(train)
-    raise TypeError.new "Not a train class!" unless train.is_a?(Train) 
+    raise TypeError, 'Not a train class!' unless train.is_a?(Train)
     true
   end
 end

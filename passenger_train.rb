@@ -5,10 +5,10 @@ class PassengerTrain < Train
     super if valid_carriage?(carriage)
   end
 
-  private 
+  private
 
   def valid_carriage?(carriage)
-    raise TypeError.new "Not a PassengerCarriage class" unless carriage.is_a?(PassengerCarriage)
+    raise TypeError, 'Not a PassengerCarriage class' unless carriage.is_a?(PassengerCarriage)
     true
   end
 end

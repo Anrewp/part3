@@ -2,7 +2,7 @@ class Train
   include Manufacturer
   include InstanceCounter
 
-  NUMBER_FORMAT = /^[a-z|0-9]{3}-?[a-z|0-9]{2}$/i
+  NUMBER_FORMAT = /^[a-z|0-9]{3}-?[a-z|0-9]{2}$/i.freeze
   @@instances = {}
   attr_reader :speed, :number, :carriages
 
@@ -12,7 +12,7 @@ class Train
     @speed = 0
     @carriages = []
     @@instances[@number] = self
-    self.register_instance
+    register_instance
   end
 
   def initialize_route(route)
@@ -34,16 +34,17 @@ class Train
   # - - - - - - - -  CARRIAGE - - - - - - - - - - - - - 
 
   def add_carriage(carriage)
-    @carriages << carriage if @speed == 0
+    @carriages << carriage if @speed.zero?
   end
 
   def remove_carriage(carriage)
-    @carriages.delete(carriage) if @speed == 0 && @carriages.size != 0
+    @carriages.delete(carriage) if @speed.zero? && !@carriages.empty?
   end
 
-  def each_carriage_to_block_with_index(index = 0, &block)
+  def each_carriage_to_block_with_index(carriage_index = 0, &block)
     return unless block_given?
-    @carriages.each.with_index(index) { |carriage, index|  block.call(carriage, index) }
+
+    @carriages.each.with_index(carriage_index) { |carriage, index| block.call(carriage, index) }
   end
 
   # - - - - - - - -  STATIONS  - - - - - - - - - - - - - 
@@ -57,7 +58,8 @@ class Train
   end
 
   def previous_station
-    return if @station_index == 0
+    return if @station_index.zero?
+
     @route.stations[@station_index - 1]
   end
 
@@ -80,23 +82,24 @@ class Train
   protected # ------------------------------------------
 
   def move_between_stations(next_or_previous_station)
-    station = self.send(next_or_previous_station)
+    station = send(next_or_previous_station)
     return unless station
-    self.current_station.send_train(self)
+
+    current_station.send_train(self)
     station.accept_train(self)
     op = next_or_previous_station == 'next_station' ? '+' : '-'
     @station_index = @station_index.send(op, 1)
   end
 
-  private 
+  private
 
   def valid?(number)
-    raise RegexpError.new "Format is incorrect!" if number !~ NUMBER_FORMAT
+    raise RegexpError, 'Format is incorrect!' if number !~ NUMBER_FORMAT
     true
   end
 
   def valid_route?(route)
-    raise TypeError.new "Not a Route class!" unless route.is_a?(Route) 
+    raise TypeError, 'Not a Route class!' unless route.is_a?(Route)
     true
   end
 end
