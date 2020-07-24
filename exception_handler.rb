@@ -2,12 +2,12 @@ module ExceptionHandler
   ERR_MSG_FORMAT = 'Does not match regular expression foramt!'.freeze
   ERR_MSG_TYPE = 'Class type is incorrect!'.freeze
   ERR_MSG_DATA = 'Data is incorrect!'.freeze
-  
+
   def valid?(type_error, condition)
     case type_error
-    when 'Regexp'  then raise RegexpError    ERR_MSG_FORMAT if condition
-    when 'Type'    then raise TypeError      ERR_MSG_TYPE   if condition
-    when 'Data'    then raise IncorrectData  ERR_MSG_DATA   if condition
+    when 'Regexp' then raise RegexpError    ERR_MSG_FORMAT if condition
+    when 'Type'   then raise TypeError      ERR_MSG_TYPE   if condition
+    when 'Data'   then raise IncorrectData  ERR_MSG_DATA   if condition
     end
     true
   end

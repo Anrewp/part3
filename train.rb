@@ -21,7 +21,7 @@ class Train
     @station_index = 0
   end
 
-  # - - - - - - - - - SPEED - - - - - - - - - - - - - 
+  # - - - - - - - - - SPEED - - - - - - - - - - - - -
 
   def increase_speed_by(num)
     @speed += num
@@ -31,7 +31,7 @@ class Train
     @speed = 0
   end
 
-  # - - - - - - - -  CARRIAGE - - - - - - - - - - - - - 
+  # - - - - - - - -  CARRIAGE - - - - - - - - - - - - -
 
   def add_carriage(carriage)
     @carriages << carriage if @speed.zero?
@@ -47,8 +47,8 @@ class Train
     @carriages.each.with_index(carriage_index) { |carriage, index| block.call(carriage, index) }
   end
 
-  # - - - - - - - -  STATIONS  - - - - - - - - - - - - - 
-  
+  # - - - - - - - -  STATIONS  - - - - - - - - - - - - -
+
   def current_station
     @route.stations[@station_index]
   end
@@ -63,7 +63,7 @@ class Train
     @route.stations[@station_index - 1]
   end
 
-  # - - - - - - - -  TRANSFER  - - - - - - - - - - - - - 
+  # - - - - - - - -  TRANSFER  - - - - - - - - - - - - -
 
   def move_to_the_next_station
     move_between_stations('next_station')
@@ -73,7 +73,7 @@ class Train
     move_between_stations('previous_station')
   end
 
-  # - - - - - - - -  GLOBAL  - - - - - - - - - - - - - 
+  # - - - - - - - -  GLOBAL  - - - - - - - - - - - - -
 
   def self.find(number)
     @@instances[number]
@@ -95,11 +95,13 @@ class Train
 
   def valid?(number)
     raise RegexpError, 'Format is incorrect!' if number !~ NUMBER_FORMAT
+
     true
   end
 
   def valid_route?(route)
     raise TypeError, 'Not a Route class!' unless route.is_a?(Route)
+
     true
   end
 end

@@ -29,12 +29,12 @@ r.add_station(s3)
 
 cargo_carriage = CargoCarriage.new(300)
 passenger_carriage = PassengerCarriage.new(48)
-passenger_carriage_2 = PassengerCarriage.new(24)
+passenger_carriage2 = PassengerCarriage.new(24)
 cargo_carriage.take_up_valume(150)
 21.times { passenger_carriage.take_a_seat }
 
 PassengerTrain.find('STA-22').add_carriage(passenger_carriage)
-PassengerTrain.find('STA-22').add_carriage(passenger_carriage_2)
+PassengerTrain.find('STA-22').add_carriage(passenger_carriage2)
 CargoTrain.find('BUL-77').add_carriage(cargo_carriage)
 PassengerTrain.find('STA-22').initialize_route(r)
 CargoTrain.find('BUL-77').initialize_route(r)
@@ -44,20 +44,21 @@ test 1, Station.instances == 3, 'number of stations'
 test 2, PassengerTrain.instances == 1, 'create passenger train'
 test 3, CargoTrain.instances == 1, 'create cargo train'
 test 4, PassengerTrain.find('STA-22').number == 'STA-22', 'faind train by number'
-puts "----------------------------------------"
+puts '----------------------------------------'
 #-----------------------------------------------------------------------------
 
 PassengerTrain.find('STA-22').each_carriage_to_block_with_index { |carriage| puts carriage.inspect }
 CargoTrain.find('BUL-77').each_carriage_to_block_with_index { |carriage| puts carriage.inspect }
-puts "----------------------------------------"
+puts '----------------------------------------'
 Station.all.each do |station|
   station.each_train_to_block_with_index do |train|
     puts "#{train.number} #{train.class}-carriages ammout: #{train.carriages.size}"
     train.each_carriage_to_block_with_index(1) do |carriage, index|
+      carriage_number = "Carriage-number-#{index} #{carriage.class}"
       if carriage.class.to_s['Cargo']
-        puts " \\_ Carriage-number-#{index} #{carriage.class} volume_left:#{carriage.free_space} occupaid_volume:#{carriage.space_left}"
+        puts " \\_ #{carriage_number} volume_left:#{carriage.free_space} occupaid_volume:#{carriage.space_left}"
       else
-        puts " \\_ Carriage-number-#{index} #{carriage.class} free_seats:#{carriage.free_space} occupied_seats:#{carriage.space_left}"
+        puts " \\_ #{carriage_number} free_seats:#{carriage.free_space} occupied_seats:#{carriage.space_left}"
       end
     end
   end

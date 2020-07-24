@@ -28,7 +28,7 @@ class Station
   def self.all
     @@instances
   end
-  
+
   def each_train_to_block_with_index(train_index = 0, &block)
     return unless block_given?
 
@@ -39,11 +39,13 @@ class Station
 
   def valid?(station_name)
     raise TypeError, 'Station name is not a string' unless station_name.is_a?(String)
+
     true
   end
 
   def valid_train?(train)
     raise TypeError, 'Not a train class!' unless train.is_a?(Train)
+
     true
   end
 end

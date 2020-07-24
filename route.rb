@@ -27,7 +27,7 @@ class Route
   private # -------------------------------------------------------------------
 
   def first_or_last_station?(station)
-    @stations.first == station || @stations.last == station
+    [@stations.first, @stations.last].include?(station)
   end
 
   def incorrect_station?(station)
@@ -36,11 +36,13 @@ class Route
 
   def valid?(current_station, end_station)
     raise TypeError, 'Not a station class' unless current_station.is_a?(Station) && end_station.is_a?(Station)
+
     true
   end
 
   def valid_station?(station)
     raise TypeError, 'Not a station class' unless station.is_a?(Station) && !first_or_last_station?(station)
+
     true
   end
 end

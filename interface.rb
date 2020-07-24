@@ -1,5 +1,4 @@
 class Interface
-
   def initialize
     @stations = []
     @routes = []
@@ -8,32 +7,31 @@ class Interface
 
   def run
     loop do
-
-      puts "- - - - - - - - - - - - - - - - - - - - - - - -"
-      puts " --- CREATE ---"
-      puts "Choose 1  to create station"
-      puts "Choose 2  to create train"
-      puts "Choose 3  to create route"
-      puts ""
-      puts " --- ADD/REMOVE ---"
-      puts "Choose 4  to add station to route"
-      puts "Choose 5  to remove station from route"
-      puts "Choose 6  to assign train to route"
-      puts ""
-      puts "Choose 7  to add carriage to train"
-      puts "Choose 8  to remove carriage from train"
-      puts "Choose 9  take up a seat in passenger train carriage"
-      puts "Choose 10 take up volume of  cargo train carriage"
-      puts ""
-      puts " --- TRANSFER ---"
-      puts "Choose 11 to transfer train to the next stations"
-      puts "Choose 12 to transfer train to the previous stations"
-      puts ""
-      puts " --- INFO ---"
-      puts "Choose 13 to Show all stations"
-      puts "Choose 14 to Show all trains on station"
-      puts "Choose 15 to Show train carriages"
-      puts "- - - - - - - - - - - - - - - - - - - - - - - -"
+      puts '- - - - - - - - - - - - - - - - - - - - - - - -'
+      puts ' --- CREATE ---'
+      puts 'Choose 1  to create station'
+      puts 'Choose 2  to create train'
+      puts 'Choose 3  to create route'
+      puts ''
+      puts ' --- ADD/REMOVE ---'
+      puts 'Choose 4  to add station to route'
+      puts 'Choose 5  to remove station from route'
+      puts 'Choose 6  to assign train to route'
+      puts ''
+      puts 'Choose 7  to add carriage to train'
+      puts 'Choose 8  to remove carriage from train'
+      puts 'Choose 9  take up a seat in passenger train carriage'
+      puts 'Choose 10 take up volume of  cargo train carriage'
+      puts ''
+      puts ' --- TRANSFER ---'
+      puts 'Choose 11 to transfer train to the next stations'
+      puts 'Choose 12 to transfer train to the previous stations'
+      puts ''
+      puts ' --- INFO ---'
+      puts 'Choose 13 to Show all stations'
+      puts 'Choose 14 to Show all trains on station'
+      puts 'Choose 15 to Show train carriages'
+      puts '- - - - - - - - - - - - - - - - - - - - - - - -'
       option = gets.chomp.to_i
 
       case option
@@ -54,22 +52,20 @@ class Interface
       when 15 then show_train_carriages
       else break
       end
-
     end
   end
 
   private
 
+  # ######### ███╗░░░███╗░█████╗░██╗███╗░░██╗ #########
+  # ######### ████╗░████║██╔══██╗██║████╗░██║ #########
+  # ######### ██╔████╔██║███████║██║██╔██╗██║ #########
+  # ######### ██║╚██╔╝██║██╔══██║██║██║╚████║ #########
+  # ######### ██║░╚═╝░██║██║░░██║██║██║░╚███║ #########
+  # ######### ╚═╝░░░░░╚═╝╚═╝░░╚═╝╚═╝╚═╝░░╚══╝ #########
 
-# ######### ███╗░░░███╗░█████╗░██╗███╗░░██╗ #########
-# ######### ████╗░████║██╔══██╗██║████╗░██║ #########
-# ######### ██╔████╔██║███████║██║██╔██╗██║ #########
-# ######### ██║╚██╔╝██║██╔══██║██║██║╚████║ #########
-# ######### ██║░╚═╝░██║██║░░██║██║██║░╚███║ #########
-# ######### ╚═╝░░░░░╚═╝╚═╝░░╚═╝╚═╝╚═╝░░╚══╝ #########
-
-# __________ CREATE [ROUTE TRAIN STATION]  _____________
-# ______________________________________________________
+  # __________ CREATE [ROUTE TRAIN STATION]  _____________
+  # ______________________________________________________
 
   def create_station
     puts 'Add station name: '
@@ -134,7 +130,6 @@ class Interface
 
   # __________________ CARRIAGE __________________________
   # ______________________________________________________
-
 
   def add_carriage_to_train
     t = find_train
@@ -205,10 +200,11 @@ class Interface
     t = find_train
     t.each_carriage_to_block_with_index(1) do |carriage, index|
       puts "#{t.number} - #{t.class}"
+      carriage_number = "Carriage-number-#{index} #{carriage.class}"
       if carriage.class.to_s['Cargo']
-        puts " \\_ Carriage-number-#{index} #{carriage.class} volume_left:#{carriage.free_space} occupaid_volume:#{carriage.space_left}"
+        puts " \\_ #{carriage_number} volume_left:#{carriage.free_space} occupaid_volume:#{carriage.space_left}"
       else
-        puts " \\_ Carriage-number-#{index} #{carriage.class} free_seats:#{carriage.free_space} occupied_seats:#{carriage.space_left}"
+        puts " \\_ #{carriage_number} free_seats:#{carriage.free_space} occupied_seats:#{carriage.space_left}"
       end
     end
     press_enter_to_continue
@@ -217,14 +213,12 @@ class Interface
   # ______________________________________________________
   # ______________________________________________________
 
-  
-# ######### ██╗░░██╗███████╗██╗░░░░░██████╗░ #########
-# ######### ██║░░██║██╔════╝██║░░░░░██╔══██╗ #########
-# ######### ███████║█████╗░░██║░░░░░██████╔╝ #########
-# ######### ██╔══██║██╔══╝░░██║░░░░░██╔═══╝░ #########
-# ######### ██║░░██║███████╗███████╗██║░░░░░ #########
-# ######### ╚═╝░░╚═╝╚══════╝╚══════╝╚═╝░░░░░ #########
-
+  # ######### ██╗░░██╗███████╗██╗░░░░░██████╗░ #########
+  # ######### ██║░░██║██╔════╝██║░░░░░██╔══██╗ #########
+  # ######### ███████║█████╗░░██║░░░░░██████╔╝ #########
+  # ######### ██╔══██║██╔══╝░░██║░░░░░██╔═══╝░ #########
+  # ######### ██║░░██║███████╗███████╗██║░░░░░ #########
+  # ######### ╚═╝░░╚═╝╚══════╝╚══════╝╚═╝░░░░░ #########
 
   def help_info
     puts '(Enter number from above list)'
@@ -272,9 +266,13 @@ class Interface
   def find_train(type = nil)
     available_info('train')
     if type
-      @trains.each_with_index { |train, index| puts "#{train.class} number: #{train.number} - #{index}" if train.class.to_s[type] }
+      @trains.each_with_index do |train, index|
+        puts "#{train.class} number: #{train.number} - #{index}" if train.class.to_s[type]
+      end
     else
-      @trains.each_with_index { |train, index| puts "#{train.class} number: #{train.number} - #{index}" }
+      @trains.each_with_index do |train, index|
+        puts "#{train.class} number: #{train.number} - #{index}"
+      end
     end
     choose_info('train')
     help_info
