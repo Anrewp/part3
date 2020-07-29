@@ -1,23 +1,27 @@
 class Route
   include InstanceCounter
-  # include ExceptionHandler
+  include Validation
 
-  attr_reader :stations
+  attr_reader   :stations, :current_station, :end_station
+
+  validate      :current_station, :type, Station
+  validate      :end_station, :type, Station
+  validate_type :station, 'Station'
 
   def initialize(current_station, end_station)
-    valid?(current_station, end_station)
+    @current_station = current_station
+    @end_station = end_station
+    validate!
     @stations = [current_station, end_station]
     register_instance
   end
 
   def add_station(station)
-    valid_station?(station)
-    @stations[-1, 0] = station
+    @stations[-1, 0] = station if correct_station?(station)
   end
 
   def remove_station(station)
-    valid_station?(station)
-    @stations.delete(station)
+    @stations.delete(station) if correct_station?(station)
   end
 
   def show_route
@@ -30,19 +34,7 @@ class Route
     [@stations.first, @stations.last].include?(station)
   end
 
-  def incorrect_station?(station)
-    !station.is_a?(Station) || first_or_last_station?(station)
-  end
-
-  def valid?(current_station, end_station)
-    raise TypeError, 'Not a station class' unless current_station.is_a?(Station) && end_station.is_a?(Station)
-
-    true
-  end
-
-  def valid_station?(station)
-    raise TypeError, 'Not a station class' unless station.is_a?(Station) && !first_or_last_station?(station)
-
-    true
+  def correct_station?(station)
+    valid_station_class?(station) && !first_or_last_station?(station)
   end
 end

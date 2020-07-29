@@ -1,20 +1,25 @@
 class Station
   include InstanceCounter
-  # include ExceptionHandler
+  include Validation
+  extend  Accessors
 
   @@instances = []
-  attr_reader :train_list, :station_name
+  attr_reader :train_list
+  strong_attr_accessor :station_name, String
+
+  validate :station_name, :precense
+  validate_type :train, 'Train'
 
   def initialize(station_name)
-    valid?(station_name)
-    @station_name = station_name
+    self.station_name = station_name
+    validate!
     @train_list = []
     @@instances << self
     register_instance
   end
 
   def accept_train(train)
-    @train_list << train if valid_train?(train)
+    @train_list << train if valid_train_class?(train)
   end
 
   def send_train(train)
@@ -33,19 +38,5 @@ class Station
     return unless block_given?
 
     @train_list.each.with_index(train_index) { |train, index| block.call(train, index) }
-  end
-
-  private # ------------------------------------------------------
-
-  def valid?(station_name)
-    raise TypeError, 'Station name is not a string' unless station_name.is_a?(String)
-
-    true
-  end
-
-  def valid_train?(train)
-    raise TypeError, 'Not a train class!' unless train.is_a?(Train)
-
-    true
   end
 end

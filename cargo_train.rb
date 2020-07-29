@@ -1,15 +1,7 @@
 class CargoTrain < Train
-  # include ExceptionHandler
+  validate_type :carriage, 'CargoCarriage'
 
   def add_carriage(carriage)
-    super if valid_carriage?(carriage)
-  end
-
-  private
-
-  def valid_carriage?(carriage)
-    raise TypeError, 'Not a CargoCarriage class!' unless carriage.is_a?(CargoCarriage)
-
-    true
+    super if valid_carriage_class?(carriage)
   end
 end

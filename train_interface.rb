@@ -1,6 +1,4 @@
 class TrainInterface
-  # include ExceptionHandler
-
   def run
     loop do
       break if press_enter_to_continue['0']

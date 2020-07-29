@@ -1,4 +1,6 @@
 require './exception_handler.rb'
+require './accessors.rb'
+require './validation.rb'
 require './manufacturer.rb'
 require './instance_counter.rb'
 require './station.rb'

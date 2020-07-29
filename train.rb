@@ -1,14 +1,21 @@
 class Train
   include Manufacturer
   include InstanceCounter
+  include Validation
+  extend  Accessors
 
   NUMBER_FORMAT = /^[a-z|0-9]{3}-?[a-z|0-9]{2}$/i.freeze
   @@instances = {}
+
   attr_reader :speed, :number, :carriages
+  strong_attr_accessor :route, Route
+
+  validate :number, :presence
+  validate :number, :format, NUMBER_FORMAT
 
   def initialize(train_number)
-    valid?(train_number)
     @number = train_number
+    validate!
     @speed = 0
     @carriages = []
     @@instances[@number] = self
@@ -16,7 +23,7 @@ class Train
   end
 
   def initialize_route(route)
-    @route = route if valid_route?(route)
+    self.route = route
     @route.stations.first.accept_train(self)
     @station_index = 0
   end
@@ -89,19 +96,5 @@ class Train
     station.accept_train(self)
     op = next_or_previous_station == 'next_station' ? '+' : '-'
     @station_index = @station_index.send(op, 1)
-  end
-
-  private
-
-  def valid?(number)
-    raise RegexpError, 'Format is incorrect!' if number !~ NUMBER_FORMAT
-
-    true
-  end
-
-  def valid_route?(route)
-    raise TypeError, 'Not a Route class!' unless route.is_a?(Route)
-
-    true
   end
 end

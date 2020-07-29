@@ -1,4 +1,6 @@
+require './accessors.rb'
 require './exception_handler.rb'
+require './validation.rb'
 require './manufacturer.rb'
 require './instance_counter.rb'
 require './station.rb'
@@ -62,4 +64,31 @@ Station.all.each do |station|
       end
     end
   end
+end
+#-----------------------------------------------------------------------------
+puts '----------------------------------------'
+begin
+  PassengerTrain.new('adf')
+rescue StandardError
+  test 5, true, 'Train validation format should fail'
+end
+test 6, PassengerTrain.find('adf').nil?, 'invalid train was not found'
+
+begin
+  PassengerTrain.new('222-22').initialize_route('asdf')
+rescue StandardError
+  test 7, true, 'Train initialize_route should fail'
+end
+
+begin
+  Station.new(555)
+rescue StandardError
+  test 8, true, 'Station invalid station name'
+end
+
+begin
+  station = Station.new('new station')
+  station.accept_train(5)
+rescue StandardError
+  test 9, true, 'Station accept_train should fail invalid train class'
 end
