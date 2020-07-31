@@ -41,8 +41,7 @@ module Validation
     def valid?
       validate!
       true
-    rescue StandardError => e
-      puts " Validatoin Failed: Error: #{e.message}"
+    rescue StandardError
       false
     end
 

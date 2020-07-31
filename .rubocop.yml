@@ -7,9 +7,6 @@ Metrics/MethodLength:
 Metrics/BlockLength:
   Max: 50
 
-Lint/ShadowedException: 
-  Enabled: false
-
 Style/Documentation: 
   Enabled: false
 

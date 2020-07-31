@@ -6,7 +6,7 @@ class Carriage
   attr_reader :free_space
   strong_attr_accessor :max_space,  Integer
   strong_attr_accessor :free_space, Integer
-  
+
   validate :max_space, :presence
   validate :free_space, :presence
 

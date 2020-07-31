@@ -12,7 +12,7 @@ class TrainInterface
       end
       success
     end
-  rescue RegexpError, TypeError, StandardError => e
+  rescue StandardError => e
     rescue_info(e)
     retry
   end

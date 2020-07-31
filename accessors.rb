@@ -6,9 +6,12 @@ module Accessors
       define_method(attribute) { instance_variable_get(attr_name) }
       define_method("#{attribute}_history") { instance_variable_get(attr_history) }
       define_method("#{attribute}=") do |value|
+        if instance_variable_get(attr_history)
+          instance_variable_get(attr_history).push(instance_variable_get(attr_name))
+        else
+          instance_variable_set(attr_history, [])
+        end
         instance_variable_set(attr_name, value)
-        instance_variable_set(attr_history, []) unless instance_variable_get(attr_history)
-        instance_variable_get(attr_history).push(value)
       end
     end
   end
